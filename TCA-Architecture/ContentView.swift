@@ -13,15 +13,26 @@ struct ContentView: View {
     let store: StoreOf<CounterFeature>
 
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            VStack {
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            VStack(spacing: 20) {
                 Text("Count: \(viewStore.count)")
-                HStack {
-                    Button("-") { viewStore.send(.decrement) }
+                    .font(.largeTitle)
+
+                if let id = viewStore.lastGeneratedID {
+                    Text("Last UUID: \(id.uuidString)")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+
+                HStack(spacing: 40) {
+                    Button("−") { viewStore.send(.decrement) }
+                        .font(.largeTitle)
+
                     Button("+") { viewStore.send(.increment) }
+                        .font(.largeTitle)
                 }
             }
+            .padding()
         }
     }
 }
-
